@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     REDIS_PORT: int
     REDIS_DB: int = 0
     REDIS_PASSWD: Optional[str] = None
+    REDIS_TTL: int = 3600
 
     class Config:
         env_file = ".env"
