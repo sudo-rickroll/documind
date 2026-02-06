@@ -8,7 +8,6 @@ class RedisClient:
     @classmethod
     def get_instance(cls):
         if not cls._instance:
-            # Not awaitable. Use ping() to test connection or get key to lazy load
             cls._instance = redis.Redis(
                 host=settings.REDIS_HOST,
                 port=settings.REDIS_PORT,
@@ -22,4 +21,10 @@ class RedisClient:
         if cls._instance:
             await cls._instance.close()
             cls._instance = None
+
+    async def __aenter__(self):
+        return await self.get_instance()
+    
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self.close()
 

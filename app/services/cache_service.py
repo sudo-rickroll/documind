@@ -1,5 +1,5 @@
 import json
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 from app.core.database import RedisClient
 from app.core.config import settings
 
@@ -8,7 +8,7 @@ class CacheService:
         self.redis = RedisClient.get_instance()
 
     async def get_document(self, doc_id: str) -> Optional[Dict]:
-        data = await self.redis.get(f"doc: {doc_id}")
+        data = await self.redis.get(f"doc:{doc_id}")
         return json.loads(data) if data else None
     
     async def set_document(self, doc_id: str, data: Dict) -> None:
